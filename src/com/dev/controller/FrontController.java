@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class FrontController extends HttpServlet {
-
+	
 	private static final long serialVersionUID = 1L;
 	String charset = null;
 	HashMap<String, Controller> list = null;
@@ -23,10 +23,10 @@ public class FrontController extends HttpServlet {
 		charset = sc.getInitParameter("charset");
 		list = new HashMap<String, Controller>();
 		list.put("/memberInsert.do", new MemberInsertController());
-		list.put("/memberSearch.do", new MemberSearchController());
-		list.put("/memberUpdate.do", new MemberUpdateController());
-		list.put("/memberDelete.do", new MemberDeleteController());
-		list.put("/memberList.do", new MemberListController());
+//		list.put("/memberSearch.do", new MemberSearchController());
+//		list.put("/memberUpdate.do", new MemberUpdateController());
+//		list.put("/memberDelete.do", new MemberDeleteController());
+//		list.put("/memberList.do", new MemberListController());
 	}
 
 	/*
@@ -35,10 +35,10 @@ public class FrontController extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding(charset);
-		String uri = request.getRequestURI();
-		String contextPath = request.getContextPath();
-		String path = uri.substring(contextPath, length());
-		Controller subController = list.get(path);
+		String uri = request.getRequestURI();			// => /dev_CRUD/xxx.do
+		String contextPath = request.getContextPath(); 	// => /dev_CRUD
+		String path = uri.substring(contextPath.length()); 	// => /xxx.do
+		Controller subController = list.get(path);			// => key값이 /xxx.do인 HashMap의 Value 객체
 		subController.execute(request, response);		
 	}
 }

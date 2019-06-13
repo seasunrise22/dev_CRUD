@@ -9,23 +9,23 @@ import javax.servlet.http.HttpServletResponse;
 import com.dev.service.MemberService;
 import com.dev.vo.MemberVO;
 
-public class MemberInsertController implements Controller {
+public class MemberUpdateController implements Controller {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 파라미터 추출
+		// Parameter 추출
 		String id = request.getParameter("id");
 		String passwd = request.getParameter("passwd");
 		String name = request.getParameter("name");
 		String mail = request.getParameter("mail");
-		
+
 		// 유효성 체크
-		if(id.isEmpty() || passwd.isEmpty() || name.isEmpty() || mail.isEmpty()) {
-			request.setAttribute("error", "모든 항목을 빠짐없이 입력해주시기 바랍니다!");
-			HttpUtil.forward(request, response, "/memberInsert.jsp");
-			return;
+		if (id.isEmpty() || passwd.isEmpty() || name.isEmpty() || mail.isEmpty()) {
+			request.setAttribute("error", "모든 항목을 빠짐없이 입력해라!");
+			HttpUtil.forward(request, response, "/memberUpdate.jsp");
+			return; // 그냥 return 박으면 메소드 실행 종료됨.
 		}
-		
+
 		// VO 객체에 데이터 바인딩
 		MemberVO member = new MemberVO();
 		member.setId(id);
@@ -34,12 +34,11 @@ public class MemberInsertController implements Controller {
 		member.setMail(mail);
 		
 		// Service 객체의 메소드 호출
-		MemberService service = MemberService.getInstance(); // 싱글톤 패턴을 이용한 객체 생성
-		service.memberInsert(member);
+		MemberService service = MemberService.getInstance();
+		service.memberUpdate(member);
 		
 		// Output View 페이지로 이동
 		request.setAttribute("id", id);
-		HttpUtil.forward(request, response, "/result/memberInsertOutput.jsp");
-	}	
-
+		HttpUtil.forward(request, response, "/result/memberUpdateOutput.jsp");
+	}
 }

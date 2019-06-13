@@ -78,4 +78,50 @@ public class MemberDAO {
 		}
 	}
 
+	public MemberVO memberSearch(String id) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		MemberVO member = null;
+		
+		try {
+			conn = connect();
+			pstmt = conn.prepareStatement("select * from member where id=?");
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				member = new MemberVO();
+				member.setId(rs.getString(1));
+				member.setPasswd(rs.getString(2));
+				member.setName(rs.getString(3));
+				member.setMail(rs.getString(4));
+			}
+		} catch(Exception ex) {
+			System.out.println("야, id 검색하는 도중에 오류남 ㅋ : " + ex);
+		} finally {
+			close(conn, pstmt, rs);
+		}
+		
+		return member;
+	}
+	
+	public void memberUpdate(MemberVO member) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = connect();
+			pstmt = conn.prepareStatement("update member set passwd=?, name=?, mail=? where id=?");
+			pstmt.setString(1, member.getPasswd());
+			pstmt.setString(2, member.getName());
+			pstmt.setString(3, member.getMail());
+			pstmt.setString(4, member.getId());
+			pstmt.executeUpdate();
+		} catch(Exception ex) {
+			System.out.println("야, 수정하는 도중에 오류 발생했다 ㅋ : " + ex);
+		} finally {
+			close(conn, pstmt);
+		}
+	}
 }

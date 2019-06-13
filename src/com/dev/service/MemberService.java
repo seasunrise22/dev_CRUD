@@ -17,4 +17,13 @@ public class MemberService {
 	public void memberInsert(MemberVO member) {
 		dao.memberInsert(member);
 	}
+	
+	public MemberVO memberSearch(String id) {
+		MemberVO member = dao.memberSearch(id); // DB에서 id로 검색한 결과를 MemverVO(ValueObject)형태로 받아서 리턴
+		return member;
+	}
+	
+	public void memberUpdate(MemberVO member) {
+		dao.memberUpdate(member); // db의 회원정보 수정 역할 맡은 메소드로 memberVO 객체를 전달
+	}
 }
